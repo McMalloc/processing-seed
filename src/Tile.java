@@ -15,8 +15,8 @@ public class Tile {
         w = ornament.gridSize;
         x = calculateX(index) * w;
         y = calculateY(index) * w;
-        angle = 0;
-//        angle = index / 100f;
+//        angle = 0;
+        angle = index / 100f;
     }
 
     private int calculateX(int index) {
@@ -40,8 +40,8 @@ public class Tile {
 
     // Move stripe
     void rotate() {
-//        angle+=0.08;
-        angle = angle + applet.random(-0.5f,0.5f);
+        angle+=0.08;
+//        angle = angle + applet.random(-0.5f,0.5f);
     }
     // Scale stripe
     void scale() {

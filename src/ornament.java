@@ -37,8 +37,8 @@ public class ornament extends PApplet {
         loop++;
         background(255);
         for(Tile square : squares) {
-//            square.rotate();
-            square.scale();
+            square.rotate();
+//            square.scale();
             square.display(colors, loop);
         }
     }
