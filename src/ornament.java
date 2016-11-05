@@ -2,9 +2,9 @@ import processing.core.*;
 
 public class ornament extends PApplet {
 
-    public static final int WIDTH = 1000;
-    public static final int HEIGHT = 700;
-    public static int gridSize = 40;
+    public static final int WIDTH = 1400;
+    public static final int HEIGHT = 900;
+    public static int gridSize = 10;
     public static int nX = (ornament.WIDTH / ornament.gridSize) + 1;
     public static int nY = (ornament.HEIGHT / ornament.gridSize) + 1;
     private int loop = 0;
@@ -19,6 +19,7 @@ public class ornament extends PApplet {
 
     public void settings() {
         size(WIDTH, HEIGHT);
+//        fullScreen();
     }
 
     public void setup() {
@@ -29,16 +30,16 @@ public class ornament extends PApplet {
         }
 
         noStroke();
-        background(100);
+        background(0);
     }
 
     public void draw() {
         // Move and display all "stripes"
         loop++;
-        background(255);
+        background(0);
         for(Tile square : squares) {
-//            square.rotate();
-            square.scale();
+            square.rotate();
+//            square.scale();
             square.display(colors, loop);
         }
     }
