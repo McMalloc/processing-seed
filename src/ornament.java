@@ -1,4 +1,5 @@
 import processing.core.*;
+import processing.opengl.PShader;
 
 public class ornament extends PApplet {
 
@@ -7,7 +8,8 @@ public class ornament extends PApplet {
     public static int gridSize = 60;
     public static int nX = (ornament.WIDTH / ornament.gridSize) + 1;
     public static int nY = (ornament.HEIGHT / ornament.gridSize) + 1;
-    private int loop = 0;
+    public PGraphics canvas, passH, passV;
+    public PShader blur;
 
     public static int[][] vectors = new int[][] {
             {-1,2},
@@ -28,21 +30,61 @@ public class ornament extends PApplet {
     private RGB[] colors = new RGB[numberOfTiles];
 
     public void settings() {
-        size(WIDTH, HEIGHT);
+        size(WIDTH, HEIGHT, P3D);
 //        fullScreen();
     }
 
     public void setup() {
+        blur = loadShader("blur.glsl");
+        blur.set("blurSize", 15);
+        blur.set("sigma", 15.0f);
         for (int i = 0; i < tiles.length; i++) {
             tiles[i] = new Tile(this, i);
             colors[i] = new RGB(i);
         }
+        canvas = createGraphics(WIDTH, HEIGHT, P2D);
+        passH = createGraphics(width, height, P2D);
+        passH.noSmooth();
 
-        noStroke();
-//        stroke(255, 255, 255);
-        fill(20,20,20);
-        textSize(22);
-        background(255);
+        passV = createGraphics(width, height, P2D);
+        passV.noSmooth();
+        background(0);
+    }
+
+    public void draw() {
+        // Move and display all "stripes"
+        canvas.beginDraw();
+        canvas.noStroke();
+        for(Tile tile : tiles) {
+            tile.display(this);
+        }
+        canvas.endDraw();
+
+        blur.set("horizontalPass", 1);
+        passH.beginDraw();
+        passH.background(0);
+        passH.shader(blur);
+        passH.image(canvas, 0, 0);
+        passH.endDraw();
+
+        // Applying the blur shader along the horizontal direction
+        blur.set("horizontalPass", 0);
+        passV.beginDraw();
+        passV.background(0);
+        passV.shader(blur);
+        passV.image(passH, 0, 0);
+        passV.endDraw();
+
+        tint(180, 180, 255);
+        image(canvas, 0, 0);
+
+        tint(255, 128);
+        image(passV, 0, 0);
+
+
+
+//        tint(255, 20);
+//        image(canvas, 0, 0);
     }
 
     public float[] getDirection(int mX, int mY) {
@@ -53,15 +95,6 @@ public class ornament extends PApplet {
         vector[0] = mouseX-centerX;
         vector[1] = mouseY-centerY;
         return vector;
-    }
-
-    public void draw() {
-        // Move and display all "stripes"
-        loop++;
-        for(Tile tile : tiles) {
-            tile.display();
-        }
-        fill(0, 0, 255);
     }
 
     public void mouseMoved() {

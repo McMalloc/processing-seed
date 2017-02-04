@@ -31,12 +31,12 @@ public class Tile {
     }
 
     // Draw tile
-    void display() {
+    void display(ornament ctx) {
         for (int i = 0; i < 7; i++) {
-            applet.fill(ornament.watch[i]);
             Coordinate corner1 = getPoint(x, y, ornament.gridSize, i % 6);
             Coordinate corner2 = getPoint(x, y, ornament.gridSize, i+1 % 6);
-            applet.triangle(x, y, corner1.x, corner1.y, corner2.x, corner2.y);
+            ctx.canvas.fill(ornament.watch[i]);
+            ctx.canvas.triangle(x, y, corner1.x, corner1.y, corner2.x, corner2.y);
         }
     }
 
@@ -44,8 +44,8 @@ public class Tile {
         Coordinate point = new Coordinate();
         float angle_deg = 60 * i   + 30;
         float angle_rad = ornament.PI / 180 * angle_deg;
-        point.x = (int) (x + size * ornament.cos(angle_rad));
-        point.y = (int) (y + size * ornament.sin(angle_rad));
+        point.x = (int) (x + (size-5) * ornament.cos(angle_rad));
+        point.y = (int) (y + (size-5) * ornament.sin(angle_rad));
         return point;
     }
 }
