@@ -35,7 +35,7 @@ public class Tile {
         for (int i = 0; i < 7; i++) {
             Coordinate corner1 = getPoint(x, y, ornament.gridSize, i % 6);
             Coordinate corner2 = getPoint(x, y, ornament.gridSize, i+1 % 6);
-            ctx.canvas.fill(ornament.watch[i]);
+            ctx.canvas.fill(ornament.palette[i]);
             ctx.canvas.triangle(x, y, corner1.x, corner1.y, corner2.x, corner2.y);
         }
     }
